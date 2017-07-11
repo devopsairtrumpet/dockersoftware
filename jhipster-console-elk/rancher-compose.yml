@@ -1,0 +1,17 @@
+version: '2'
+services:
+  jhispter-logstash:
+    scale: 1
+    start_on_create: true
+  jhipster-alerter:
+    scale: 1
+    start_on_create: true
+  jhipster-elasticsearch:
+    scale: 1
+    start_on_create: true
+  jhipster-console:
+    scale: 1
+    start_on_create: true
+  jhipster-import-dashboards:
+    scale: 1
+    start_on_create: true
