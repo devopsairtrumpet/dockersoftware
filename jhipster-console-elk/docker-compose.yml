@@ -1,15 +1,14 @@
 version: '2'
 services:
-    # https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html
     jhipster-elasticsearch:
         image: aayushjain/jhipster-elasticsearch:latest
         stdin_open: true
         tty: true
         ports:
             - "9200:9200"
-#        environment:
-#            - http.host=0.0.0.0
-#            - transport.host=127.0.0.1
+    #        environment:
+    #            - http.host=0.0.0.0
+    #            - transport.host=127.0.0.1
         # Uncomment this section to have elasticsearch data loaded from a volume
         volumes:
            - jhipster-elasticsearch-vol:/usr/share/elasticsearch/data
@@ -30,7 +29,7 @@ services:
         depends_on:
             - jhipster-elasticsearch
         labels:
-            io.rancher.container.pull_image: always            
+            io.rancher.container.pull_image: always
 
     jhipster-console:
         image: aayushjain/jhipster-console:latest
@@ -41,7 +40,7 @@ services:
         depends_on:
             - jhipster-elasticsearch
         labels:
-            io.rancher.container.pull_image: always            
+            io.rancher.container.pull_image: always
 
     jhipster-import-dashboards:
         image: aayushjain/jhipster-import-dashboards:latest
@@ -63,13 +62,12 @@ services:
         labels:
             io.rancher.container.pull_image: always
 
-    #https://www.elastic.co/guide/en/elasticsearch/client/curator/current/configuration.html
     jhipster-curator:
-         image: aayushjain/jhipster-curator:latest
-         environment:
-             ES_HOST=jhipster-elasticsearch
-             UNIT_COUNT=7
-             UNIT=days
+        image: aayushjain/jhipster-curator:latest
+        environment:
+             - ES_HOST=jhipster-elasticsearch
+             - UNIT_COUNT=7
+             - UNIT=days
         labels:
             io.rancher.container.pull_image: always
 
@@ -82,7 +80,7 @@ services:
             - 9411:9411
         labels:
             io.rancher.container.pull_image: always
-            
+
 volumes:
   jhipster-elasticsearch-vol:
     driver: pxd
