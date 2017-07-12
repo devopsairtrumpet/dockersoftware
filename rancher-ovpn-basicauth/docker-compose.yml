@@ -1,0 +1,44 @@
+version: '2'
+services:
+
+  openvpn-httpbasic-data:
+    labels:
+      io.rancher.container.start_once: 'true'
+    entrypoint:
+    - /bin/true
+    image: busybox
+    volumes:
+    - openvpn-vol:/etc/openvpn/
+
+  openvpn-httpbasic-server:
+    ports:
+    - 1194:1194/tcp
+    environment:
+      AUTH_METHOD: httpbasic
+      AUTH_HTTPBASIC_URL: https://api.github.com/user
+      CERT_COUNTRY: NL
+      CERT_PROVINCE: NH
+      CERT_CITY: AMS
+      CERT_ORG: airtrumpet
+      CERT_EMAIL: devops@airtrumpet.com
+      CERT_OU: IT
+      REMOTE_IP: IP-address-or-hostname
+      REMOTE_PORT: 1194
+      VPNPOOL_NETWORK: 10.43.0.0
+      VPNPOOL_CIDR: 16
+      OPENVPN_EXTRACONF:
+    labels:
+      io.rancher.sidekicks: openvpn-httpbasic-data
+      io.rancher.container.pull_image: always
+    image: aayushjain/rancherovpn:1.0
+    privileged: true
+    volumes_from:
+    - openvpn-httpbasic-data
+
+volumes:
+ openvpn-vol:
+  driver: pxd
+  external: false
+  driver_opts:
+     size: 1
+     repl: 3
